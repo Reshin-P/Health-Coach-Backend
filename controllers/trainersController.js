@@ -61,6 +61,9 @@ const authtrainer = asyncHandler(async (req, res) => {
             name: trainer.name,
             username: trainer.username,
             email: trainer.email,
+            phone: trainer.phone,
+            certifications: trainer.certifications,
+            streams: trainer.streams,
             token: generateToken(trainer._id)
         })
     } else {

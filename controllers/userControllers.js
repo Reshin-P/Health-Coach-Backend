@@ -7,15 +7,23 @@ import Program from '../model/programModel.js'
 
 
 const authUser = asyncHandler(async (req, res) => {
+    console.log(req.body);
   
-    const { email, password } = req.body;
-    const user = await User.findOne({ email: email })
+    const { username, password } = req.body;
+    const user = await User.findOne({ username: username })
+    console.log(user);
+
+    
         
     if (user && (await user.matchPassword(password))) {
-        
+        if(user.isBlocked){
+            res.status(403)
+            throw new Error("User Blocked")
+        }
         res.json({
             _id: user._id,
             name: user.name,
+            username:user.username,
             email: user.email,
             token: generateToken(user._id)
 

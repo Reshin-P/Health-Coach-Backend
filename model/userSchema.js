@@ -37,9 +37,16 @@ const userSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    isBlocked: {
+        type: Boolean,
+        required: true,
+        default: false
     }
-
-})
+},
+    {
+        timestamps: true
+    })
 
 userSchema.methods.matchPassword = async function (enterPassword) {
 
