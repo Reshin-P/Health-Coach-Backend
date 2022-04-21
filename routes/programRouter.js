@@ -3,7 +3,7 @@ const router=express.Router()
 import {getallprograms} from '../controllers/programController.js'
 
 
-router.route('/getallprograms').get(getallprograms)
+router.route('/').get(getallprograms)
 
 
 

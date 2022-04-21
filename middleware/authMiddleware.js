@@ -9,7 +9,7 @@ const protect =AsyncHandler(async (req,res,next)=>{
 
     let token
     console.log(req.headers.authorization);
-    if(req.headers.authorization&&req.headers.authorization.startsWith('Bearer')){
+    if(req.headers.authorization&&req.headers.authorization.startsWith('l')){
         console.log("token found");
         try{
             token=req.headers.authorization.split(' ')[1]

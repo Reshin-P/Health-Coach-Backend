@@ -5,9 +5,10 @@ import {protect} from '../middleware/authMiddleware.js'
 
 
 
-router.route('/signup').post(signUp)
+router.route('/').post(signUp)
 router.route('/login').post(authUser)
 router.route('/profile').get(protect,getUserprofile)
+
 
 
 

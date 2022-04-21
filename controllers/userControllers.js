@@ -1,8 +1,8 @@
 
-import asyncHandler from 'express-async-handler'
-import User from '../model/userSchema.js'
+import asyncHandler from 'express-async-handler';
+import Program from '../model/programModel.js';
+import User from '../model/userSchema.js';
 import generateToken from '../util/generateToken.js';
-import Program from '../model/programModel.js'
 
 
 
@@ -115,7 +115,12 @@ const signUp = asyncHandler(async (req, res) => {
 })
 
 
+const addworkout=asyncHandler(async(req,res)=>{
+    console.log("--------------------------");
 
+    console.log(req.body);
+    console.log("--------------------------");
+})
 
 
 
@@ -123,5 +128,6 @@ export {
     signUp,
     authUser,
     getUserprofile,
-    homepage
-}
+    homepage,
+    addworkout
+};

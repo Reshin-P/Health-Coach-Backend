@@ -4,9 +4,22 @@ import trainers from "./trainers.js";
 import Trainer from '../model/trainerSchema.js'
 import generateToken from '../util/generateToken.js'
 
+
+
+
+//@desc Get All Trainers
+//@route GET /api/traienrs
+//@access Public
+
 const getFamousTrainors = asyncHandler(async (req, res) => {
     res.json(trainers)
 })
+
+
+
+//@desc Get All Programs
+//@route GET /api/programs
+//@access Public
 
 const SignupTrainers = asyncHandler(async (req, res) => {
     let {
@@ -47,6 +60,13 @@ const SignupTrainers = asyncHandler(async (req, res) => {
         })
     }
 })
+
+
+//@desc Post Authtrainer
+//@route GET /api/trainerlogin
+//@access Public
+
+
 
 const authtrainer = asyncHandler(async (req, res) => {
     console.log(req.body);

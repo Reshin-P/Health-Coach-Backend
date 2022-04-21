@@ -1,12 +1,12 @@
-import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
-import { notFound,errorHandler } from './middleware/errorMiddleware.js'
+import express from 'express'
 import connectDB from './Config/DB-Config.js'
-import userRouters from './routes/userRouters.js'
+import { errorHandler, notFound } from './middleware/errorMiddleware.js'
 import ProgramRouter from './routes/programRouter.js'
 import trainersRouter from './routes/trainersRouter.js'
-
+import userRouters from './routes/userRouters.js'
+import workoutRouter from './routes/workoutRouter.js'
 const app = express()
 app.use(cors({
     methods: "*",
@@ -19,9 +19,10 @@ connectDB()
 app.use(express.json())
 
 
-app.use('/api',userRouters)
+app.use('/api/user',userRouters)
 app.use('/api/program',ProgramRouter)
 app.use('/api/trainers',trainersRouter)
+app.use('/api/workout',workoutRouter)
 
 
 app.use(notFound)
