@@ -37,6 +37,14 @@ const workoutSchema=mongoose.Schema({
         type:String,
         required:true
     },
+    isDeleted:{
+        type:Boolean,
+        required:true,
+        default:false
+    }
+},
+{
+    timestamp:true
 })
 
 const Workout=mongoose.model('workout',workoutSchema)
