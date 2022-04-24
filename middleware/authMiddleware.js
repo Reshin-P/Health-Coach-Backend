@@ -41,12 +41,14 @@ const protect =AsyncHandler(async (req,res,next)=>{
 
 const protectTrainers=AsyncHandler(async(req,res,next)=>{
     let token
-    if(req.headers.authorization&&req.headers.authorization.startsWith('bearer')){
+    console.log(req.headers.authorization);
+    if(req.headers.authorization&&req.headers.authorization.startsWith('Bearer')){
         try{
             token=req.headers.authorization.split(' ')[1]
+            console.log(token);
             const decoded=jwt.verify(token,process.env.JWT_SECRET)
-            req.trainer=await Trainer.findById(decoded._id).select('-password')
-            console.log(req.rainer);
+            req.trainer=await Trainer.findById(decoded.id).select('-password')
+            next()
         }catch(error){
             console.log(error);
             res.status(401)
@@ -60,4 +62,4 @@ const protectTrainers=AsyncHandler(async(req,res,next)=>{
     }
 })
 
-export {protect}
+export {protect,protectTrainers}

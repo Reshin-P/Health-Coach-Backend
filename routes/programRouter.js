@@ -1,9 +1,10 @@
 import express from "express";
 const router=express.Router()
-import {getallprograms} from '../controllers/programController.js'
+import {getallprograms,getworkouts} from '../controllers/programController.js'
 
 
 router.route('/').get(getallprograms)
+router.route('/program/:id').get(getworkouts)
 
 
 

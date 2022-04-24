@@ -45,14 +45,15 @@ const AWS_SECRET_KEY = "Ids+lgRHoNQQTDCHLEvr3JKwfX8itUPeMLPQ4D5Y"
 //         throw new Error('Upload failed');
 //     }
 // });
+const s3 = new S3({
+    accessKeyId: AWS_ACCESS_KEY,
+    secretAccessKey: AWS_SECRET_KEY,
+    region: AWS_BUCKET_REGION
+})
 
 export const s3Multiple = asynHandler(async (req, res, next) => {
     console.log("reached s3");
-    const s3 = new S3({
-        accessKeyId: AWS_ACCESS_KEY,
-        secretAccessKey: AWS_SECRET_KEY,
-        region: AWS_BUCKET_REGION
-    })
+  
     const response = [];
     const files = req.files;
     const videoFile = files.video[0]
@@ -71,7 +72,7 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
     };
     try {
         const data = await s3.upload(videoFileparams).promise();
-       
+       console.log(data);
         results.video=data.Location
         count++;
 console.log('sucess');
@@ -135,31 +136,18 @@ console.log(count);
 
 
   
-    // media.forEach(async file => {
-    //     console.log(file.fieldname);
-    //     console.log("foreeach");
-    //     const params = {
-    //         Bucket: AWS_BUCKET_NAME,
-    //         Key: `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`,
-    //         Body: file.buffer
-    //     };
-    //     try {
-    //         const data = await s3.upload(params).promise();
-    //         response.push({ path: data.Location });
-
-    //         if (response.length === media.length) {
-    //             req.files = response;
-
-    //             next();
-    //         }
-    //     } catch (err) {
-    //         console.error(err);
-    //         res.status(400);
-    //         throw new Error('Upload failed');
-    //     }
-    // });
+ 
 });
 
 
 
 
+export const getFilestream=(filekey)=>{
+    console.log("reached s333333");
+    console.log(filekey);
+const downloadParms={
+    Key:filekey,
+    Bucket:AWS_BUCKET_NAME
+}
+return s3.getObject(downloadParms).createReadStream()
+}

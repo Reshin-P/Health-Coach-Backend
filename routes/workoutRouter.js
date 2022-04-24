@@ -1,8 +1,8 @@
 import express from "express";
 const router=express.Router()
-import {addworkout}  from '../controllers/workoutController.js'
+import {addworkout,getWorkout}  from '../controllers/workoutController.js'
 import { s3Multiple } from '../util/s3Bucket.js'
-
+import  {protectTrainers} from '../middleware/authMiddleware.js'
 import multer from "multer";
 
 const storage=multer.memoryStorage({
@@ -17,8 +17,8 @@ const storage=multer.memoryStorage({
 
 
 const upload = multer({ storage })
-router.route('/').post(upload.fields([{name:'video'}, {name:'dietimage'},{name:'preview'}]),s3Multiple,addworkout)
-
+router.route('/').post(protectTrainers,upload.fields([{name:'video'}, {name:'dietimage'},{name:'preview'}]),s3Multiple,addworkout)
+router.route('/:id').get(getWorkout)
 
 
 

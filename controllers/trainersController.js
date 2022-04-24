@@ -75,7 +75,14 @@ const authtrainer = asyncHandler(async (req, res) => {
     console.log(trainer);
     console.log(password);
     if (trainer && trainer.matchPassword(password)) {
-        console.log("iff  conditon");
+        if (trainer.isBlocked) {
+            res.status(401)
+            throw new Error("Account Blocked")
+        }
+        if (trainer.isAccept) {
+            res.status(401)
+            throw new Error("Admin not  aprooved ")
+        }
         res.json({
             _id: trainer._id,
             name: trainer.name,

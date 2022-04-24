@@ -41,6 +41,14 @@ const workoutSchema=mongoose.Schema({
         type:Boolean,
         required:true,
         default:false
+    },
+    trainer:{
+        type:String,
+        required:true
+    },
+    trainerid:{
+        type:String,
+        required:true
     }
 },
 {
