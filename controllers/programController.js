@@ -16,8 +16,6 @@ const getallprograms = asyncHandler(async (req, res) => {
 
 const getworkouts = asyncHandler(async (req,res) => {
     
-    console.log(req.params.id );
-  console.log("------------------------------------frefdfdff");
     const workout=await Workout.find({program:req.params.id})
    
     if(workout){

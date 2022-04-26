@@ -7,23 +7,18 @@ import generateToken from '../util/generateToken.js';
 
 
 const authUser = asyncHandler(async (req, res) => {
-    console.log(req.body);
-  
+
     const { username, password } = req.body;
     const user = await User.findOne({ username: username })
-    console.log(user);
-
-    
-        
     if (user && (await user.matchPassword(password))) {
-        if(user.isBlocked){
+        if (user.isBlocked) {
             res.status(403)
             throw new Error("User Blocked")
         }
         res.json({
             _id: user._id,
             name: user.name,
-            username:user.username,
+            username: user.username,
             email: user.email,
             token: generateToken(user._id)
 
@@ -34,17 +29,14 @@ const authUser = asyncHandler(async (req, res) => {
     }
 })
 
-
 const getUserprofile = asyncHandler(async (req, res) => {
-    console.log("profile");
     res.send("success")
 })
 
 
-const homepage=asyncHandler(async(req,res)=>{
-    console.log("home page");
-    const sample=await Program.find()
-    res.json({sample,trainers})
+const homepage = asyncHandler(async (req, res) => {
+    const sample = await Program.find()
+    res.json({ sample, trainers })
 })
 
 
@@ -61,28 +53,19 @@ const homepage=asyncHandler(async(req,res)=>{
 
 
 const signUp = asyncHandler(async (req, res) => {
-    console.log(req.body);
-    console.log("----------------------");
 
-    let { name, email,username,
+    let { name, email, username,
         age,
         phone,
         height,
         weight,
         healthcondition,
         password } = req.body;
-     
-
-
-    console.log(email);
     const userExists = await User.findOne({ email })
-    console.log('userExists', userExists);
     if (userExists) {
-        console.log("userexixt null condition");
         res.status(400)
         throw new Error('Email Id already Used')
     }
-
     const user = await User.create({
         name,
         username,
@@ -94,11 +77,7 @@ const signUp = asyncHandler(async (req, res) => {
         healthcondition,
         password
     })
-   
 
-
-
-    console.log(user);
     if (user) {
 
         res.status(201).json({
@@ -115,11 +94,8 @@ const signUp = asyncHandler(async (req, res) => {
 })
 
 
-const addworkout=asyncHandler(async(req,res)=>{
-    console.log("--------------------------");
+const addworkout = asyncHandler(async (req, res) => {
 
-    console.log(req.body);
-    console.log("--------------------------");
 })
 
 

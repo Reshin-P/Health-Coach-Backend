@@ -69,11 +69,8 @@ const SignupTrainers = asyncHandler(async (req, res) => {
 
 
 const authtrainer = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const { username, password } = req.body;
     const trainer = await Trainer.findOne({ username: username })
-    console.log(trainer);
-    console.log(password);
     if (trainer && trainer.matchPassword(password)) {
         if (trainer.isBlocked) {
             res.status(401)
@@ -94,7 +91,6 @@ const authtrainer = asyncHandler(async (req, res) => {
             token: generateToken(trainer._id)
         })
     } else {
-        console.log("else");
         res.status(401)
         throw new Error("Invalid Username or Password")
     }

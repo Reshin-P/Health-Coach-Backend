@@ -50,7 +50,6 @@ const trainerSchema = mongoose.Schema({
 
 
 trainerSchema.methods.matchPassword = async function (enterPassword) {
-    console.log("ddddddd");
 
     return await bcrypt.compare(enterPassword, this.password)
 

@@ -52,7 +52,6 @@ const s3 = new S3({
 })
 
 export const s3Multiple = asynHandler(async (req, res, next) => {
-    console.log("reached s3");
   
     const response = [];
     const files = req.files;
