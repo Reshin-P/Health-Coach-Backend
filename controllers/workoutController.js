@@ -7,7 +7,7 @@ const addworkout = asyncHandler(async (req, res) => {
 
     const { workout, price, description, diet1, diet2, program } = req.body
     const video = req.files.video
-    const preview = req.files.video
+    const preview = req.files.preview
     const dietimage = req.files.dietimage
     const trainer = req.trainer.name
     const trainerid = req.trainer._id
@@ -62,21 +62,21 @@ const deleteWorkout = asyncHandler(async (req, res) => {
 
 
 
-const updateWorkout=asyncHandler(async(req,res)=>{
-    
-    
+const updateWorkout = asyncHandler(async (req, res) => {
+
+
     console.log("reached");
     console.log(req.params.id);
-    const  data=await Workout.findById(req.params.id)
-    if(!data){
-        throw new Error ("Workout Not Found")
+    const data = await Workout.findById(req.params.id)
+    if (!data) {
+        throw new Error("Workout Not Found")
     }
     console.log(data);
-    data.workout=req.body.workout
-    data.price=req.body.price
-    data.description=req.body.description
-    data.diet1=req.body.diet1
-    data.diet2=req.body.diet2
+    data.workout = req.body.workout
+    data.price = req.body.price
+    data.description = req.body.description
+    data.diet1 = req.body.diet1
+    data.diet2 = req.body.diet2
     await data.save()
     return res.status(204).json("update sucess");
 

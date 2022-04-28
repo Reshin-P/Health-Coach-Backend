@@ -20,6 +20,11 @@ const authUser = asyncHandler(async (req, res) => {
             name: user.name,
             username: user.username,
             email: user.email,
+            phone: user.phone,
+            weight: user.weight,
+            height: user.height,
+            age: user.age,
+            healthcondition: user.healthcondition,
             token: generateToken(user._id)
 
         })
@@ -27,6 +32,7 @@ const authUser = asyncHandler(async (req, res) => {
         res.status(401)
         throw new Error("invalid email or password")
     }
+
 })
 
 const getUserprofile = asyncHandler(async (req, res) => {
@@ -39,6 +45,35 @@ const homepage = asyncHandler(async (req, res) => {
     res.json({ sample, trainers })
 })
 
+
+const updataUser = asyncHandler(async (req, res) => {
+    console.log(req.body);
+    const { name, phone, email, age, height, healthcondition } = req.body
+    const user = await User.findById(req.params.id)
+    if (!user) {
+        throw new Error("no user found")
+    }
+    user.name = name
+    user.phone = phone,
+        user.email = email,
+        user.age = age,
+        user.height = height,
+        user.healthcondition = healthcondition
+    await user.save()
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        weight: user.weight,
+        height: user.height,
+        age: user.age,
+        healthcondition: user.healthcondition,
+        token: generateToken(user._id)
+
+    })
+})
 
 
 
@@ -99,11 +134,42 @@ const addworkout = asyncHandler(async (req, res) => {
 })
 
 
+const updateWeight = asyncHandler(async (req, res) => {
+
+    console.log(req.params.id);
+    console.log(req.body);
+    console.log("reache d updare user page");
+    const user = await User.findById(req.params.id)
+    console.log(user);
+    user.weight = req.body.weight
+    user.save()
+    console.log(user);
+    console.log("updated");;
+    res.status(200).json({
+        _id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        weight: user.weight,
+        height: user.height,
+        age: user.age,
+        healthcondition: user.healthcondition,
+        token: generateToken(user._id)
+
+    })
+
+
+})
+
 
 export {
     signUp,
     authUser,
     getUserprofile,
     homepage,
-    addworkout
+    addworkout,
+    updataUser,
+    updateWeight
 };
+

@@ -1,9 +1,6 @@
 import express from "express";
-import {getFamousTrainors,SignupTrainers,authtrainer} from '../controllers/trainersController.js'
-
-
-
-const router=express.Router()
+import { getFamousTrainors, SignupTrainers, authtrainer } from '../controllers/trainersController.js'
+const router = express.Router()
 
 
 router.route('/trainers').get(getFamousTrainors)

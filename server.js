@@ -19,10 +19,10 @@ connectDB()
 app.use(express.json())
 
 
-app.use('/api/user',userRouters)
-app.use('/api/program',ProgramRouter)
-app.use('/api/trainers',trainersRouter)
-app.use('/api/workout',workoutRouter)
+app.use('/api/user', userRouters)
+app.use('/api/program', ProgramRouter)
+app.use('/api/trainers', trainersRouter)
+app.use('/api/workout', workoutRouter)
 
 
 app.use(notFound)
