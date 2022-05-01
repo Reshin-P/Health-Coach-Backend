@@ -3,6 +3,11 @@ import Workout from '../model/workoutSchema.js';
 
 
 
+//@desc Post Add-Workouts
+//@route POST /api/workout
+//@access Trainer
+
+
 const addworkout = asyncHandler(async (req, res) => {
 
     const { workout, price, description, diet1, diet2, program } = req.body
@@ -28,6 +33,11 @@ const addworkout = asyncHandler(async (req, res) => {
 })
 
 
+
+//@desc GET Single Workout
+//@route POST /api/workout
+//@access Public
+
 const getWorkout = asyncHandler(async (req, res) => {
 
     const workout = await Workout.findById(req.params.id)
@@ -41,11 +51,20 @@ const getWorkout = asyncHandler(async (req, res) => {
 })
 
 
+
+//@desc Get All-Workouts
+//@route POST /api/workout
+//@access Pubic
+
 const allWorkout = asyncHandler(async (req, res) => {
     const allWorkout = await Workout.find({ isDeleted: "false" })
     res.status(200).json(allWorkout)
 })
 
+
+//@desc  Delete-Workouts
+//@route Delete /api/workout/:id
+//@access Trainer
 
 const deleteWorkout = asyncHandler(async (req, res) => {
     const workout = await Workout.findById(req.params.id);
@@ -60,6 +79,9 @@ const deleteWorkout = asyncHandler(async (req, res) => {
     return res.status(204).json({});
 })
 
+//@desc  Update-Workouts
+//@route Patch /api/workout/:id
+//@access Trainer
 
 
 const updateWorkout = asyncHandler(async (req, res) => {

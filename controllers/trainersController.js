@@ -16,8 +16,7 @@ const getFamousTrainors = asyncHandler(async (req, res) => {
 })
 
 
-
-//@desc Get All Programs
+//@desc Signup trainers
 //@route GET /api/programs
 //@access Public
 
@@ -62,7 +61,7 @@ const SignupTrainers = asyncHandler(async (req, res) => {
 })
 
 
-//@desc Post Authtrainer
+//@desc Post Auth-Trainer
 //@route GET /api/trainerlogin
 //@access Public
 

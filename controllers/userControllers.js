@@ -5,6 +5,9 @@ import User from '../model/userSchema.js';
 import generateToken from '../util/generateToken.js';
 
 
+//@desc  Auth-user
+//@route POST /api/user
+//@access Public
 
 const authUser = asyncHandler(async (req, res) => {
 
@@ -26,24 +29,26 @@ const authUser = asyncHandler(async (req, res) => {
             age: user.age,
             healthcondition: user.healthcondition,
             token: generateToken(user._id)
-
         })
     } else {
         res.status(401)
         throw new Error("invalid email or password")
     }
-
 })
 
-const getUserprofile = asyncHandler(async (req, res) => {
-    res.send("success")
-})
+
+
 
 
 const homepage = asyncHandler(async (req, res) => {
     const sample = await Program.find()
     res.json({ sample, trainers })
 })
+
+
+//@desc  Update-user
+//@route PUT /api/user/:id
+//@access User
 
 
 const updataUser = asyncHandler(async (req, res) => {
@@ -76,19 +81,11 @@ const updataUser = asyncHandler(async (req, res) => {
 })
 
 
-
-
-
-
-
-
-
-
-
-
+//@desc  Register-user
+//@route POST /api/user/
+//@access Public
 
 const signUp = asyncHandler(async (req, res) => {
-
     let { name, email, username,
         age,
         phone,
@@ -112,7 +109,6 @@ const signUp = asyncHandler(async (req, res) => {
         healthcondition,
         password
     })
-
     if (user) {
 
         res.status(201).json({
@@ -129,9 +125,10 @@ const signUp = asyncHandler(async (req, res) => {
 })
 
 
-const addworkout = asyncHandler(async (req, res) => {
+//@desc  Update-Weight
+//@route PUT /api/user/:id
+//@access User
 
-})
 
 
 const updateWeight = asyncHandler(async (req, res) => {
@@ -143,21 +140,6 @@ const updateWeight = asyncHandler(async (req, res) => {
     console.log(user);
     user.weight = req.body.weight
     user.save()
-    console.log(user);
-    console.log("updated");;
-    res.status(200).json({
-        _id: user._id,
-        name: user.name,
-        username: user.username,
-        email: user.email,
-        phone: user.phone,
-        weight: user.weight,
-        height: user.height,
-        age: user.age,
-        healthcondition: user.healthcondition,
-        token: generateToken(user._id)
-
-    })
 
 
 })
@@ -166,9 +148,7 @@ const updateWeight = asyncHandler(async (req, res) => {
 export {
     signUp,
     authUser,
-    getUserprofile,
     homepage,
-    addworkout,
     updataUser,
     updateWeight
 };

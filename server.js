@@ -7,6 +7,10 @@ import ProgramRouter from './routes/programRouter.js'
 import trainersRouter from './routes/trainersRouter.js'
 import userRouters from './routes/userRouters.js'
 import workoutRouter from './routes/workoutRouter.js'
+import AdminRouter from './routes/AdminRouter.js'
+import PaymentRouter from './routes/PaymentRouter.js'
+import SubcribeRouter from './routes/SubcribeRouter.js'
+
 const app = express()
 app.use(cors({
     methods: "*",
@@ -23,6 +27,9 @@ app.use('/api/user', userRouters)
 app.use('/api/program', ProgramRouter)
 app.use('/api/trainers', trainersRouter)
 app.use('/api/workout', workoutRouter)
+app.use('/api/admin', AdminRouter)
+app.use('/api/payment', PaymentRouter)
+app.use('/api/subcribe', SubcribeRouter)
 
 
 app.use(notFound)
