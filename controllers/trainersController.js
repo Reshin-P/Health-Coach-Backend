@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import trainers from "./trainers.js";
 import Trainer from '../model/trainerSchema.js'
 import generateToken from '../util/generateToken.js'
+import Subscribe from "../model/SubcribeModel.js";
 
 
 
@@ -97,8 +98,20 @@ const authtrainer = asyncHandler(async (req, res) => {
 })
 
 
+const getUser = asyncHandler(async (req, res) => {
+    console.log("hitted");
+    console.log(req.params.id);
+    let user = await Subscribe.find({ "workerout.trainerid": req.params.id })
+    if (user) {
+        res.json(user)
+    }
+    else {
+        throw new Error("no user Found")
+    }
 
 
+})
 
-export { getFamousTrainors, SignupTrainers, authtrainer }
+
+export { getFamousTrainors, SignupTrainers, authtrainer, getUser }
 
