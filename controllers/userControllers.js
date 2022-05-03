@@ -132,24 +132,28 @@ const signUp = asyncHandler(async (req, res) => {
 
 
 const updateWeight = asyncHandler(async (req, res) => {
-
-    console.log(req.params.id);
-    console.log(req.body);
-    console.log("reache d updare user page");
     const user = await User.findById(req.params.id)
-    console.log(user);
-    user.weight = req.body.weight
-    user.save()
-
+    if (user) {
+        user.weight = req.body.weight
+        user.save()
+        res.json("sucessfully updated").status(200)
+    } else {
+        throw new Error("update weight error")
+    }
 
 })
 
+
+const getSingleUser = asyncHandler(async (req, res) => {
+    console.log("hittes on ne api");
+})
 
 export {
     signUp,
     authUser,
     homepage,
     updataUser,
-    updateWeight
+    updateWeight,
+    getSingleUser
 };
 
