@@ -10,10 +10,9 @@ const storage = multer.memoryStorage({
         cb(null, "")
     }
 })
-
-
-
 const upload = multer({ storage })
+
+
 router.route('/').post(protectTrainers, upload.fields([{ name: 'video' }, { name: 'dietimage' }, { name: 'preview' }]), s3Multiple, addworkout)
 router.route('/:id').get(getWorkout)
 router.route('/').get(allWorkout)

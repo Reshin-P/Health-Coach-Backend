@@ -36,11 +36,11 @@ const trainerSchema = mongoose.Schema({
         default: false,
         required: true
     },
-    
-    isAccept:{
-        type:Boolean,
-        default:false,
-        required:true
+
+    isAccept: {
+        type: Boolean,
+        default: false,
+        required: true
     }
 },
     {
@@ -51,8 +51,9 @@ const trainerSchema = mongoose.Schema({
 
 trainerSchema.methods.matchPassword = async function (enterPassword) {
 
-    return await bcrypt.compare(enterPassword, this.password)
-
+    const data = await bcrypt.compare(enterPassword, this.password)
+    console.log(data);
+    return data
 }
 
 trainerSchema.pre('save', async function (next) {

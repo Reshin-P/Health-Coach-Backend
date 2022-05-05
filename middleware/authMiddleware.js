@@ -6,7 +6,7 @@ import Trainer from '../model/trainerSchema.js'
 
 
 const protect = AsyncHandler(async (req, res, next) => {
-    console.log("check");
+    console.log("Reached User Auth Middleware");
 
 
     console.log(req.headers.authorization);
@@ -22,8 +22,11 @@ const protect = AsyncHandler(async (req, res, next) => {
                 res.status(403)
                 throw new Error("User Blocked")
             }
+            console.log(" User Auth Middleware PASSED");
             next()
         } catch (error) {
+            console.log(" User Auth Middleware FAILED");
+
             res.status(401)
             throw new Error('Not Authorized token failed')
 
@@ -42,6 +45,7 @@ const protect = AsyncHandler(async (req, res, next) => {
 
 
 const protectTrainers = AsyncHandler(async (req, res, next) => {
+    console.log("reached trainer middleware");
     let token
     console.log(req.headers.authorization);
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {

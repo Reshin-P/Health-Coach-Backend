@@ -4,6 +4,7 @@ import trainers from "./trainers.js";
 import Trainer from '../model/trainerSchema.js'
 import generateToken from '../util/generateToken.js'
 import Subscribe from "../model/SubcribeModel.js";
+import mongoose from "mongoose";
 
 
 
@@ -70,8 +71,10 @@ const SignupTrainers = asyncHandler(async (req, res) => {
 
 const authtrainer = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
+    console.log(password);
     const trainer = await Trainer.findOne({ username: username })
-    if (trainer && trainer.matchPassword(password)) {
+    if (trainer && (await trainer.matchPassword(password))) {
+        console.log("passed");
         if (trainer.isBlocked) {
             res.status(401)
             throw new Error("Account Blocked")
@@ -99,19 +102,39 @@ const authtrainer = asyncHandler(async (req, res) => {
 
 
 const getUser = asyncHandler(async (req, res) => {
-    console.log("hitted");
+    req.params.id = mongoose.Types.ObjectId(req.params.id)
     console.log(req.params.id);
-    let user = await Subscribe.find({ "workerout.trainerid": req.params.id })
-    if (user) {
+
+    let user = await Subscribe.find({ "workout.trainerid": req.params.id })
+    console.log(user);
+    if (user.length != 0) {
+
         res.json(user)
     }
     else {
-        throw new Error("no user Found")
+        throw new Error("No user purchased workouts")
     }
-
-
 })
 
 
-export { getFamousTrainors, SignupTrainers, authtrainer, getUser }
+const userWorkouts = asyncHandler(async (req, res) => {
+    console.log("hitted user workouts");
+    console.log(req.trainer._id);
+    const data = await Subscribe.find({ $and: [{ user: req.params.id }, { "workout.trainerid": req.trainer._id }] })
+    console.log(data);
+    if (data.length == 0) {
+        throw new Error("No data found")
+    }
+    else {
+        res.status(200).json(data)
+    }
+})
+
+export {
+    getFamousTrainors,
+    SignupTrainers,
+    authtrainer,
+    getUser,
+    userWorkouts
+}
 

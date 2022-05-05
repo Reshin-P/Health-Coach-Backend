@@ -27,6 +27,7 @@ const authUser = asyncHandler(async (req, res) => {
             weight: user.weight,
             height: user.height,
             age: user.age,
+            profilephoto: user.profilephoto,
             healthcondition: user.healthcondition,
             token: generateToken(user._id)
         })
@@ -52,7 +53,6 @@ const homepage = asyncHandler(async (req, res) => {
 
 
 const updataUser = asyncHandler(async (req, res) => {
-    console.log(req.body);
     const { name, phone, email, age, height, healthcondition } = req.body
     const user = await User.findById(req.params.id)
     if (!user) {
@@ -142,11 +142,53 @@ const updateWeight = asyncHandler(async (req, res) => {
     }
 
 })
+//Get Single user
+//@route post /api/user/:id
+//@access User
 
 
 const getSingleUser = asyncHandler(async (req, res) => {
-    console.log("hittes on ne api");
+    let user = await User.findById(req.params.id)
+    if (user) {
+        res.status(200).json(user)
+    }
+    else {
+        throw new Error("No User found")
+    }
 })
+
+//@desc  Update-profile-photo
+//@route patch /api/user/proflephoto
+//@access User
+
+
+const uploadPhoto = asyncHandler(async (req, res) => {
+    console.log("reached");
+    console.log(req.file);
+    try {
+        const user = await User.findById(req.user._id)
+        user.profilephoto = req.file.path
+        await user.save()
+        res.json({
+            _id: user._id,
+            name: user.name,
+            username: user.username,
+            email: user.email,
+            phone: user.phone,
+            weight: user.weight,
+            height: user.height,
+            age: user.age,
+            profilephoto: user.profilephoto,
+            healthcondition: user.healthcondition,
+            token: generateToken(user._id)
+        })
+
+    } catch (error) {
+        throw new Error("user not found in database")
+    }
+
+})
+
 
 export {
     signUp,
@@ -154,6 +196,7 @@ export {
     homepage,
     updataUser,
     updateWeight,
-    getSingleUser
+    getSingleUser,
+    uploadPhoto
 };
 

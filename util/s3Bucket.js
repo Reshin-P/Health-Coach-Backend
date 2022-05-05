@@ -10,37 +10,37 @@ const AWS_BUCKET_NAME = "healthcoach-fitness"
 
 
 
-// export const s3UpdataSingle = asynHandler(async (req, res, next) => {
-//     console.log("reached s3");
-//     const s3=new S3({
-//         accessKeyId: AWS_ACCESS_KEY,
-//         secretAccessKey:AWS_SECRET_KEY,
-//         region: AWS_BUCKET_REGION
-//     })
+export const s3UpdataSingle = asynHandler(async (req, res, next) => {
+    console.log("reached s3");
+    const s3 = new S3({
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_SECRET_KEY,
+        region: process.env.AWS_BUCKET_REGION
+    })
 
-//     const file = req.file;
-//     console.log(file);
-//     console.log(file.buffer);
-//     const params = {
-//         Bucket: "healthcoach-fitness",
-//         Key: file.originalname,
-//         Body: file.buffer
-//     };
+    const file = req.file;
+    console.log(file);
+    console.log(file.buffer);
+    const params = {
+        Bucket: "healthcoach-fitness",
+        Key: file.originalname,
+        Body: file.buffer
+    };
 
-//     try {
-//         const data = await s3.upload(params).promise();
-//         req.file = { path: data.Location };
-//         console.log(data);
-//         console.log(req.file);
+    try {
+        const data = await s3.upload(params).promise();
+        req.file = { path: data.Location };
+        console.log(data);
+        console.log(req.file);
 
-//         next();
-//     } catch (err) {
-//         console.log("-------------------");
-//         console.error(err);
-//         res.status(400);
-//         throw new Error('Upload failed');
-//     }
-// });
+        next();
+    } catch (err) {
+        console.log("-------------------");
+        console.error(err);
+        res.status(400);
+        throw new Error('Upload failed');
+    }
+});
 const s3 = new S3({
     accessKeyId: process.env.AWS_ACCESS_KEY,
     secretAccessKey: process.env.AWS_SECRET_KEY,

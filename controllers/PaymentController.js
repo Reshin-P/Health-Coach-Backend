@@ -1,4 +1,5 @@
 import asyncHandler from "express-async-handler";
+import mongoose from "mongoose";
 import Stripe from 'stripe'
 import { v4 as uuidv4 } from 'uuid';
 import Subscribe from "../model/SubcribeModel.js";
@@ -7,15 +8,13 @@ const stripe = new Stripe('sk_test_51KuA1JSAlmynsLgOtQ8ZniN3WbpdovC9Mc8DnXrmEEkE
 
 
 const payment = asyncHandler(async (req, res) => {
-    console.log("payment");
-    console.log("======================================");
-    console.log(req.body.item);
-    console.log(req.user);
-    console.log("======================================");
+
 
     try {
         console.log("tyry");
         const { item, token } = req.body
+        item.trainerid = mongoose.Types.ObjectId(item.trainerid)
+        console.log(item.trainerid);
         console.log("tyry");
 
         item.price = parseInt(item.price)

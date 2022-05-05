@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Workout from '../model/workoutSchema.js';
+import mongoose from "mongoose";
 
 
 
@@ -15,7 +16,8 @@ const addworkout = asyncHandler(async (req, res) => {
     const preview = req.files.preview
     const dietimage = req.files.dietimage
     const trainer = req.trainer.name
-    const trainerid = req.trainer._id
+    const trainerid = mongoose.Types.ObjectId(req.trainer._id)
+    console.log(trainerid);
     const data = await Workout.create({
         workout,
         price,

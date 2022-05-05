@@ -42,6 +42,10 @@ const userSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    profilephoto: {
+        type: String,
+        default: null
     }
 },
     {
@@ -53,6 +57,7 @@ userSchema.methods.matchPassword = async function (enterPassword) {
     return await bcrypt.compare(enterPassword, this.password)
 
 }
+
 userSchema.pre('save', async function (next) {
 
     if (!this.isModified('password')) {
