@@ -41,6 +41,10 @@ const trainerSchema = mongoose.Schema({
         type: Boolean,
         default: false,
         required: true
+    },
+    profilephoto: {
+        type: String,
+        default: false
     }
 },
     {

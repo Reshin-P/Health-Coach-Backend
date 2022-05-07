@@ -163,7 +163,7 @@ const getSingleUser = asyncHandler(async (req, res) => {
 
 
 const uploadPhoto = asyncHandler(async (req, res) => {
-    console.log("reached");
+    console.log("reached upload photo");
     console.log(req.file);
     try {
         const user = await User.findById(req.user._id)

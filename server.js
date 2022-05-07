@@ -47,7 +47,7 @@ app.use(errorHandler)
 const PORT = process.env.PORT
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`Server Running in Port ${PORT}`);
 })
 

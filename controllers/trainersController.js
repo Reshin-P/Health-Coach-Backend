@@ -91,6 +91,8 @@ const authtrainer = asyncHandler(async (req, res) => {
             phone: trainer.phone,
             certifications: trainer.certifications,
             streams: trainer.streams,
+            about: trainer.about,
+            profilephoto: trainer.profilephoto,
             token: generateToken(trainer._id)
         })
     } else {
@@ -130,11 +132,79 @@ const userWorkouts = asyncHandler(async (req, res) => {
     }
 })
 
+
+
+const uploadtrainerPhoto = asyncHandler(async (req, res) => {
+    console.log("reached controllers");
+    console.log(req.file);
+    console.log(req.trainer);
+    try {
+        const trainer = await Trainer.findById(req.trainer._id)
+        trainer.profilephoto = req.file.path
+        await trainer.save()
+        console.log(trainer);
+        console.log("ggggggggg");
+        res.json({
+            _id: trainer._id,
+            name: trainer.name,
+            username: trainer.username,
+            email: trainer.email,
+            phone: trainer.phone,
+            certifications: trainer.certifications,
+            streams: trainer.streams,
+            profilephoto: trainer.profilephoto,
+            token: generateToken(trainer._id)
+        })
+
+    } catch (error) {
+        throw new Error("user not found in database")
+    }
+})
+
+
+
+const updateTrainer = asyncHandler(async (req, res) => {
+    console.log("reached update trainer page");
+    try {
+        let trainer = await Trainer.findById(req.params.id)
+        console.log(req.body);
+        const { name, phone, email, streams, certificates, about } = req.body
+        console.log(certificates);
+        trainer.name = name
+        trainer.phone = phone
+        trainer.email = email
+        trainer.streams = streams
+        trainer.certificates = certificates
+        trainer.about = about
+        await trainer.save()
+        res.json({
+            _id: trainer._id,
+            name: trainer.name,
+            username: trainer.username,
+            email: trainer.email,
+            phone: trainer.phone,
+            certifications: trainer.certifications,
+            streams: trainer.streams,
+            about: trainer.about,
+            profilephoto: trainer.profilephoto,
+            token: generateToken(trainer._id)
+        })
+    } catch (error) {
+        throw new Error("Profile Updation Failed")
+
+    }
+
+
+})
+
+
 export {
     getFamousTrainors,
     SignupTrainers,
     authtrainer,
     getUser,
-    userWorkouts
+    userWorkouts,
+    uploadtrainerPhoto,
+    updateTrainer
 }
 
