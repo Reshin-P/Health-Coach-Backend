@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
+import dotenv from 'dotenv'
+dotenv.config()
 
 
 const connectDB = async () => {
-    console.log("databaase connecrion checkin");
+    console.log("databaase connection checking");
     try {
         const connection = await mongoose.connect(process.env.MONGO_URL, {
             useUnifiedTopology: true,
             useNewUrlParser: true,
-
         })
-
         console.log("Database Connected");
     } catch (error) {
         console.log(`DB Error:${error}`);

@@ -17,7 +17,6 @@ const addworkout = asyncHandler(async (req, res) => {
     const dietimage = req.files.dietimage
     const trainer = req.trainer.name
     const trainerid = mongoose.Types.ObjectId(req.trainer._id)
-    console.log(trainerid);
     const data = await Workout.create({
         workout,
         price,
@@ -70,9 +69,7 @@ const allWorkout = asyncHandler(async (req, res) => {
 
 const deleteWorkout = asyncHandler(async (req, res) => {
     const workout = await Workout.findById(req.params.id);
-    console.log(workout);
     if (!workout) {
-        console.log("data illa");
         res.status(404);
         throw new Error('workout not found');
     }
@@ -88,14 +85,10 @@ const deleteWorkout = asyncHandler(async (req, res) => {
 
 const updateWorkout = asyncHandler(async (req, res) => {
 
-
-    console.log("reached");
-    console.log(req.params.id);
     const data = await Workout.findById(req.params.id)
     if (!data) {
         throw new Error("Workout Not Found")
     }
-    console.log(data);
     data.workout = req.body.workout
     data.price = req.body.price
     data.description = req.body.description
@@ -105,10 +98,59 @@ const updateWorkout = asyncHandler(async (req, res) => {
     return res.status(204).json("update sucess");
 
 })
+
+
+//@desc Get All Traiener Workout
+//@route Patch /api/workout/trainer/:id
+//@access Public
+
+
+const getAllTrainerWorkouts = asyncHandler(async (req, res) => {
+    console.log("reache here traienr");
+    console.log(req.params.id);
+    const workout = await Workout.find({ trainerid: req.params.id })
+    console.log(workout);
+    if (workout) {
+        if (workout.length == 0) {
+            throw new Error("No Workout Addded")
+        } else {
+            res.status(200).json(workout)
+        }
+    } else {
+        throw new Error("Something went wrong")
+    }
+
+})
+
+
+
+
+const blockUnblock = asyncHandler(async (req, res) => {
+    console.log("eeeeeee");
+    console.log(req.body);
+    const { id, value } = req.body
+    const workout = await Workout.findById(id)
+    console.log(workout);
+    if (value === "block") {
+        workout.isBlocked = true
+        await workout.save()
+        res.status(200).json("Workout Blocked")
+    } else if (value === "unblock") {
+        console.log("else if worked");
+        workout.isBlocked = false
+        await workout.save()
+        res.status(200).json("Workout UnBlocked")
+
+    }
+
+})
+
 export {
     addworkout,
     getWorkout,
     allWorkout,
     deleteWorkout,
-    updateWorkout
+    updateWorkout,
+    getAllTrainerWorkouts,
+    blockUnblock
 };

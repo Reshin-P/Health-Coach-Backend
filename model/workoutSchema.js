@@ -42,6 +42,11 @@ const workoutSchema = mongoose.Schema({
         required: true,
         default: false
     },
+    isBlocked: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
     trainer: {
         type: String,
         required: true

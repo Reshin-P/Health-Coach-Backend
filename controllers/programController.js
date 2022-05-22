@@ -7,8 +7,17 @@ import Workout from '../model/workoutSchema.js'
 // @access Public
 
 const getallprograms = asyncHandler(async (req, res) => {
-    const sample = await Program.find()
-    res.json(sample)
+
+    const data = await Program.find({ isDeleted: false })
+    if (data) {
+        if (data.length == 0) {
+            throw new Error("no program added")
+        } else {
+            res.json(data)
+        }
+    } else {
+        throw new Error("something went wrong")
+    }
 })
 
 
@@ -29,4 +38,33 @@ const getworkouts = asyncHandler(async (req, res) => {
 
 })
 
-export { getallprograms, getworkouts }
+// @desc Post  Add Programs
+// @route Post /api/programs
+// @access Admin
+
+const addPrograms = asyncHandler(async (req, res) => {
+    try {
+        const program = await Program.create({
+            programname: req.body.name,
+            image: req.file.path
+        })
+        res.status(200).json(program)
+    } catch (error) {
+        throw new Error("something went wrong")
+    }
+
+})
+
+const deleteProgram = asyncHandler(async (req, res) => {
+    const data = await Program.findById(req.params.id)
+    if (data) {
+        data.isDeleted = true
+        await data.save()
+        res.status(200).json(`${data.programname} is deleted`)
+    } else {
+        throw new Error("No Program Found")
+    }
+
+})
+
+export { getallprograms, getworkouts, addPrograms, deleteProgram }

@@ -47,7 +47,7 @@ const homepage = asyncHandler(async (req, res) => {
 })
 
 
-//@desc  Update-user
+//@desc  Update-user    
 //@route PUT /api/user/:id
 //@access User
 
@@ -163,8 +163,7 @@ const getSingleUser = asyncHandler(async (req, res) => {
 
 
 const uploadPhoto = asyncHandler(async (req, res) => {
-    console.log("reached upload photo");
-    console.log(req.file);
+
     try {
         const user = await User.findById(req.user._id)
         user.profilephoto = req.file.path
@@ -190,7 +189,21 @@ const uploadPhoto = asyncHandler(async (req, res) => {
 })
 
 
+
+
+
+
+const allUsers = asyncHandler(async (req, res) => {
+    const users = await User.find()
+    if (users) {
+        res.status(200).json(users)
+    } else {
+        throw new Error("something went wrong")
+    }
+})
+
 export {
+    allUsers,
     signUp,
     authUser,
     homepage,

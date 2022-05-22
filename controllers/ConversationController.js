@@ -1,23 +1,24 @@
 import asynchandler from 'express-async-handler'
 import Conversation from '../model/ConversationModel.js'
-const makeMembers = ({ user, trainer }) => [user, trainer]
+const makeMembers = ({ sender, receiver }) => [sender, receiver]
 
 const createConversation = asynchandler(async (req, res) => {
+
+    console.log("converstion controller");
     const members = [req.body.user, req.body.trainer]
 
-
-
-    const exist = await Conversation.exists({ members: { $all: [req.body.user, req.body.trainer] } })
-    // const exist = await Conversation.findOne({ members: makeMembers({ user: req.body.user, trainer: req.body.trainer }) })
+    const exist = await Conversation.findOne({ members: { $all: [req.body.sender, req.body.receiver] } })
+    console.log("exist", exist);
     if (exist) {
         res.json(exist)
     } else {
         const data = await Conversation.create({
             members: makeMembers({
-                user: req.body.user,
-                trainer: req.body.trainer
+                sender: req.body.sender,
+                receiver: req.body.receiver
             })
         })
+        console.log("data", data);
         res.json(data)
     }
 

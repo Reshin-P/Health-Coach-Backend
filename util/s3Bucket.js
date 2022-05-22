@@ -19,8 +19,7 @@ export const s3UpdataSingle = asynHandler(async (req, res, next) => {
     })
 
     const file = req.file;
-    console.log(file);
-    console.log(file.buffer);
+
     const params = {
         Bucket: "healthcoach-fitness",
         Key: file.originalname,
@@ -30,11 +29,11 @@ export const s3UpdataSingle = asynHandler(async (req, res, next) => {
     try {
         const data = await s3.upload(params).promise();
         req.file = { path: data.Location };
-        console.log(data);
-        console.log(req.file);
+        console.log("uploaded");
 
         next();
     } catch (err) {
+        console.log("uploaded error");
         console.log("-------------------");
         console.error(err);
         res.status(400);

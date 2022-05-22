@@ -36,7 +36,6 @@ const trainerSchema = mongoose.Schema({
         default: false,
         required: true
     },
-
     isAccept: {
         type: Boolean,
         default: false,
@@ -44,7 +43,11 @@ const trainerSchema = mongoose.Schema({
     },
     profilephoto: {
         type: String,
-        default: false
+        default: "/images/profile/trainer.png"
+    },
+    about: {
+        type: String,
+        required: true
     }
 },
     {

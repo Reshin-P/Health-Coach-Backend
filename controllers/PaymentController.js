@@ -9,90 +9,27 @@ const stripe = new Stripe('sk_test_51KuA1JSAlmynsLgOtQ8ZniN3WbpdovC9Mc8DnXrmEEkE
 
 const payment = asyncHandler(async (req, res) => {
 
-
     try {
-        console.log("tyry");
-        const { item, token } = req.body
-        item.trainerid = mongoose.Types.ObjectId(item.trainerid)
-        console.log(item.trainerid);
-        console.log("tyry");
-
+        const { item, paymentdetails } = req.body
         item.price = parseInt(item.price)
-        console.log(item.price);
-        const paymentIntent = await stripe.paymentIntents.create({
-            amount: item.price,
-            currency: "inr",
 
-            automatic_payment_methods: {
-                enabled: true,
-            },
-        });
-        console.log(paymentIntent);
-
-        const data = Subscribe.create({
+        const data = await Subscribe.create({
             user: req.user._id,
-            workout: req.body.item
+            paymentdetails: {
+                description: paymentdetails.paymentMethodData.description,
+                type: paymentdetails.paymentMethodData.type,
+                info: paymentdetails.paymentMethodData.info
+            },
+            workout: item
         })
         res.json({ data }).status(200)
 
     } catch (error) {
-
+        throw new Error("something went wrong")
     }
 
 
-    // try {
-    //     const { item, token } = req.body
-    //     item.price = parseInt(item.price)
-    //     console.log(item.price);
-    //     console.log("try");;
-    //     const customer = await stripe.customers.create({
-    //         email: token.email,
-    //         source: token.id,
-    //     });
-    //     console.log("customer created");;
 
-    //     const idempotencyKey = uuidv4();
-    //     const charge = await stripe.charges.create(
-    //         {
-    //             amount: item.price * 100,
-    //             currency: "inr",
-    //             customer: customer.id,
-    //             receipt_email: token.email,
-    //             description: `Purchased the ${item.workout}`
-
-    //         },
-    //         {
-    //             idempotencyKey,
-    //         }
-    //     );
-    //     console.log("Charge:", { charge });
-
-    // } catch (error) {
-    //     console.error("Error:", error);
-    // }
-    // try {
-    //     console.log("try");
-    //     // await stripe.charges.create({
-    //     //     source: token.id,
-    //     //     amount: item.price,
-    //     //     currency: 'usd'
-    //     // })
-    //     const paymentIntent = await stripe.paymentIntents.create({
-    //         amount: item.price * 100,
-    //         currency: "inr",
-    //         automatic_payment_methods: {
-    //             enabled: true,
-    //         },
-    //     });
-    //     console.log(paymentIntent);
-    //     if (paymentIntent) {
-    //         res.json(200).json("Payment sucess")
-    //     }
-
-    // } catch (error) {
-    //     throw new Error("payment error")
-
-    // }
 
 })
 

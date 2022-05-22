@@ -1,4 +1,4 @@
-import { Server, Socket } from 'socket.io'
+import { Server } from 'socket.io'
 
 
 
@@ -12,49 +12,63 @@ export const createSocket = (server) => {
     })
 
     let user = [];
+
+    // FOR ADD USER
     const addUser = (userID, SocketID) => {
         !user.some(user => user.userID === userID) &&
             user.push({ userID, SocketID })
 
+
     }
 
+    //REMOVE USER
 
     const removeUser = (socketId) => {
+
         user = user.filter((user) => user.SocketID !== socketId)
     }
 
-    const getUser = (userId) => {
-        user = user.find((user) => user.userID === userId)
+    //GET SOCKETID USING USER ID
+
+    const getUser = (reciverId) => {
+
+        return user.find((user) => user.userID === reciverId)
+
     }
 
 
-
-
     io.on("connection", (Socket) => {
-        console.log("a user connected");
 
 
+
+        // ADD USER
 
         Socket.on("addUser", userId => {
+            console.log("sdkjfadskl")
             addUser(userId, Socket.id)
             io.emit("getUsers", user)
         })
 
         Socket.on("sendMessage", ({ senderId, reciverId, text }) => {
-            const user = getUser(reciverId)
-            io.to(user.SocketID).emit("getMessage", {
-                senderId,
-                text
-            })
+
+            const getedUser = getUser(reciverId)
+            if (getedUser) {
+                console.log("here/......----......")
+                let Sid = getedUser.SocketID
+                console.log(Sid)
+                io.to(Sid).emit("getMessage", {
+                    senderId,
+                    text
+                })
+            }
         })
 
         Socket.on("disconnect", () => {
             removeUser(Socket.id)
-            console.log("a user disconnected");
             io.emit("getUsers", user)
         })
-    })
 
+    })
 
 
 }

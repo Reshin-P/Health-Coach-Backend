@@ -9,8 +9,15 @@ const programSchema = mongoose.Schema({
     image: {
         type: String,
         required: true
+    },
+    isDeleted: {
+        type: Boolean,
+        required: false
     }
-})
+},
+    {
+        timestamps: true
+    })
 
 const Program = mongoose.model('Program', programSchema)
 

@@ -14,7 +14,14 @@ import mongoose from "mongoose";
 //@access Public
 
 const getFamousTrainors = asyncHandler(async (req, res) => {
-    res.json(trainers)
+
+    try {
+        const trainers = await Trainer.find()
+        res.status(200).json(trainers)
+    } catch (error) {
+        throw new Error("database error")
+    }
+
 })
 
 
@@ -30,7 +37,8 @@ const SignupTrainers = asyncHandler(async (req, res) => {
         password,
         phone,
         certifications,
-        streams
+        streams,
+        about
     } = req.body
     const trainerEmail = await Trainer.findOne({ email: email })
     if (trainerEmail) {
@@ -50,7 +58,8 @@ const SignupTrainers = asyncHandler(async (req, res) => {
         phone,
         password,
         certifications,
-        streams
+        streams,
+        about
     })
     if (trainer) {
         res.status(201).json({
@@ -71,15 +80,13 @@ const SignupTrainers = asyncHandler(async (req, res) => {
 
 const authtrainer = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
-    console.log(password);
     const trainer = await Trainer.findOne({ username: username })
     if (trainer && (await trainer.matchPassword(password))) {
-        console.log("passed");
         if (trainer.isBlocked) {
             res.status(401)
             throw new Error("Account Blocked")
         }
-        if (trainer.isAccept) {
+        if (!trainer.isAccept) {
             res.status(401)
             throw new Error("Admin not  aprooved ")
         }
@@ -104,11 +111,16 @@ const authtrainer = asyncHandler(async (req, res) => {
 
 
 const getUser = asyncHandler(async (req, res) => {
-    req.params.id = mongoose.Types.ObjectId(req.params.id)
+    console.log("reachhhhhhhhhed");
     console.log(req.params.id);
 
-    let user = await Subscribe.find({ "workout.trainerid": req.params.id })
+    console.log(req.params.id);
+    let user = await Subscribe.find({ "workout.trainerid": req.params.id }).populate("user", "name email age phone")
+    // let user = await Subscribe.find({ "workout.trainerid": req.params.id }).populate("user", "name email age phone")
+
+
     console.log(user);
+    console.log("--------------------------------");
     if (user.length != 0) {
 
         res.json(user)
@@ -120,10 +132,8 @@ const getUser = asyncHandler(async (req, res) => {
 
 
 const userWorkouts = asyncHandler(async (req, res) => {
-    console.log("hitted user workouts");
-    console.log(req.trainer._id);
+
     const data = await Subscribe.find({ $and: [{ user: req.params.id }, { "workout.trainerid": req.trainer._id }] })
-    console.log(data);
     if (data.length == 0) {
         throw new Error("No data found")
     }
@@ -135,15 +145,12 @@ const userWorkouts = asyncHandler(async (req, res) => {
 
 
 const uploadtrainerPhoto = asyncHandler(async (req, res) => {
-    console.log("reached controllers");
-    console.log(req.file);
-    console.log(req.trainer);
+
     try {
         const trainer = await Trainer.findById(req.trainer._id)
         trainer.profilephoto = req.file.path
         await trainer.save()
-        console.log(trainer);
-        console.log("ggggggggg");
+
         res.json({
             _id: trainer._id,
             name: trainer.name,
@@ -164,12 +171,9 @@ const uploadtrainerPhoto = asyncHandler(async (req, res) => {
 
 
 const updateTrainer = asyncHandler(async (req, res) => {
-    console.log("reached update trainer page");
     try {
         let trainer = await Trainer.findById(req.params.id)
-        console.log(req.body);
         const { name, phone, email, streams, certificates, about } = req.body
-        console.log(certificates);
         trainer.name = name
         trainer.phone = phone
         trainer.email = email
@@ -191,14 +195,28 @@ const updateTrainer = asyncHandler(async (req, res) => {
         })
     } catch (error) {
         throw new Error("Profile Updation Failed")
-
     }
+})
+
+//@desc Post Trainer
+//@route GET /api/trainerlogin
+//@access Public
 
 
+const getSingleUser = asyncHandler(async (req, res) => {
+
+    try {
+        const trainer = await Trainer.findById(req.params.id)
+        res.status(200).json(trainer)
+    } catch (error) {
+
+        throw new Error("No trainer found")
+    }
 })
 
 
 export {
+    getSingleUser,
     getFamousTrainors,
     SignupTrainers,
     authtrainer,
