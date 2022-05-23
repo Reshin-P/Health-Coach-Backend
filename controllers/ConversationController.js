@@ -4,11 +4,9 @@ const makeMembers = ({ sender, receiver }) => [sender, receiver]
 
 const createConversation = asynchandler(async (req, res) => {
 
-    console.log("converstion controller");
     const members = [req.body.user, req.body.trainer]
 
     const exist = await Conversation.findOne({ members: { $all: [req.body.sender, req.body.receiver] } })
-    console.log("exist", exist);
     if (exist) {
         res.json(exist)
     } else {

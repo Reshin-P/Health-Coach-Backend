@@ -90,7 +90,7 @@ const acceptTrainers = asyncHandler(async (req, res) => {
 //@access Admin
 
 const acceptTrainersRequest = asyncHandler(async (req, res) => {
-    console.log(req.params.id);
+
     const trainer = await Trainer.findById(req.params.id)
     if (trainer) {
         trainer.isAccept = true

@@ -47,6 +47,7 @@ const s3 = new S3({
 })
 
 export const s3Multiple = asynHandler(async (req, res, next) => {
+    console.log(req.files);
 
     const response = [];
     const files = req.files;
@@ -134,6 +135,93 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
 });
 
 
+export const s3Banner = asynHandler(async (req, res, next) => {
+    console.log(req.files);
+
+
+    const files = req.files;
+    const image1 = files.image1[0]
+    const image2 = files.image2[0]
+    const image3 = files.image3[0]
+    const media = [image1, image2, image3]
+    let results = {}
+    let count = 0
+
+
+
+    const image1params = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: `${image1.fieldname}-${Date.now()}${path.extname(image1.originalname)}`,
+        Body: image1.buffer
+    };
+    try {
+        const data = await s3.upload(image1params).promise();
+        console.log(data);
+        results.image1 = data.Location
+        count++;
+        console.log('sucess');
+
+
+    } catch (err) {
+        console.error(err);
+        res.status(400);
+        throw new Error('Upload failed');
+    }
+
+
+
+    const image2Fileparams = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: `${image2.fieldname}-${Date.now()}${path.extname(image2.originalname)}`,
+        Body: image2.buffer
+    };
+    try {
+        const data = await s3.upload(image2Fileparams).promise();
+
+        results.image2 = data.Location
+        count++;
+        console.log('sucess');
+
+
+    } catch (err) {
+        console.error(err);
+        res.status(400);
+        throw new Error('Upload failed');
+    }
+
+
+
+    const image3Fileparams = {
+        Bucket: AWS_BUCKET_NAME,
+        Key: `${image3.fieldname}-${Date.now()}${path.extname(image3.originalname)}`,
+        Body: image3.buffer
+    };
+    try {
+        const data = await s3.upload(image3Fileparams).promise();
+
+        results.image3 = data.Location
+        count++;
+        console.log('sucess');
+
+
+    } catch (err) {
+        console.error(err);
+        res.status(400);
+        throw new Error('Upload failed');
+    }
+
+    console.log(count);
+
+    if (count === 3) {
+        req.files = results
+        console.log("upload sucess");
+        next();
+    }
+
+
+
+
+});
 
 
 export const getFilestream = (filekey) => {
