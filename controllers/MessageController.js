@@ -4,6 +4,9 @@ import User from '../model/userSchema.js'
 import Trainer from '../model/trainerSchema.js'
 
 
+// @desc Post  Add Messages
+// @route Post /api/message
+// @access Trainer User
 const addMessages = asyncHandler(async (req, res) => {
     const { text, sender, conversationId } = req.body
     try {
@@ -19,6 +22,11 @@ const addMessages = asyncHandler(async (req, res) => {
 
 })
 
+
+// @desc Get  Get Message
+// @route GET /api/message
+// @access Trainer User
+
 const getMessages = asyncHandler(async (req, res) => {
 
     try {
@@ -28,14 +36,17 @@ const getMessages = asyncHandler(async (req, res) => {
         })
         res.status(200).json(messages)
     } catch (error) {
-
         console.log(error);
+        throw new Error('Get Messages Errors')
 
     }
 })
 
 
 
+// @desc Post  Add Programs
+// @route Post /api/programs
+// @access Admin
 
 const getReceiver = asyncHandler(async (req, res) => {
 

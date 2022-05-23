@@ -1,10 +1,8 @@
 
 import asyncHandler from "express-async-handler";
-import trainers from "./trainers.js";
 import Trainer from '../model/trainerSchema.js'
 import generateToken from '../util/generateToken.js'
 import Subscribe from "../model/SubcribeModel.js";
-import mongoose from "mongoose";
 
 
 
@@ -76,8 +74,6 @@ const SignupTrainers = asyncHandler(async (req, res) => {
 //@route GET /api/trainerlogin
 //@access Public
 
-
-
 const authtrainer = asyncHandler(async (req, res) => {
     const { username, password } = req.body;
     const trainer = await Trainer.findOne({ username: username })
@@ -110,17 +106,15 @@ const authtrainer = asyncHandler(async (req, res) => {
 })
 
 
+//@desc get get user for trainer
+//@route GET /api//getusers/:id
+//@access Public
+
+
 const getUser = asyncHandler(async (req, res) => {
-    console.log("reachhhhhhhhhed");
-    console.log(req.params.id);
 
-    console.log(req.params.id);
     let user = await Subscribe.find({ "workout.trainerid": req.params.id }).populate("user", "name email age phone")
-    // let user = await Subscribe.find({ "workout.trainerid": req.params.id }).populate("user", "name email age phone")
 
-
-    console.log(user);
-    console.log("--------------------------------");
     if (user.length != 0) {
 
         res.json(user)
@@ -129,6 +123,13 @@ const getUser = asyncHandler(async (req, res) => {
         throw new Error("No user purchased workouts")
     }
 })
+
+
+
+
+//@desc get get user for trainer
+//@route GET /userworkouts/:id
+//@access Public
 
 
 const userWorkouts = asyncHandler(async (req, res) => {
@@ -141,6 +142,11 @@ const userWorkouts = asyncHandler(async (req, res) => {
         res.status(200).json(data)
     }
 })
+
+
+//@desc patch Update Trainer profilephoto
+//@route PATCH /profilephoto
+//@access Trainer
 
 
 
@@ -168,6 +174,10 @@ const uploadtrainerPhoto = asyncHandler(async (req, res) => {
     }
 })
 
+
+//@desc Put Update Trainer 
+//@route PUT /profilephoto
+//@access Trainer
 
 
 const updateTrainer = asyncHandler(async (req, res) => {

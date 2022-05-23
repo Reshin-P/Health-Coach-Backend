@@ -11,7 +11,6 @@ const AWS_BUCKET_NAME = "healthcoach-fitness"
 
 
 export const s3UpdataSingle = asynHandler(async (req, res, next) => {
-    console.log("reached s3");
     const s3 = new S3({
         accessKeyId: process.env.AWS_ACCESS_KEY,
         secretAccessKey: process.env.AWS_SECRET_KEY,
@@ -29,13 +28,8 @@ export const s3UpdataSingle = asynHandler(async (req, res, next) => {
     try {
         const data = await s3.upload(params).promise();
         req.file = { path: data.Location };
-        console.log("uploaded");
-
         next();
     } catch (err) {
-        console.log("uploaded error");
-        console.log("-------------------");
-        console.error(err);
         res.status(400);
         throw new Error('Upload failed');
     }
@@ -47,14 +41,11 @@ const s3 = new S3({
 })
 
 export const s3Multiple = asynHandler(async (req, res, next) => {
-    console.log(req.files);
 
-    const response = [];
     const files = req.files;
     const videoFile = files.video[0]
     const previewFile = files.preview[0]
     const dietimageFile = files.dietimage[0]
-    const media = [videoFile, previewFile, dietimageFile]
     let results = {}
     let count = 0
 
@@ -67,11 +58,8 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
     };
     try {
         const data = await s3.upload(videoFileparams).promise();
-        console.log(data);
         results.video = data.Location
         count++;
-        console.log('sucess');
-
 
     } catch (err) {
         console.error(err);
@@ -91,8 +79,6 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
 
         results.preview = data.Location
         count++;
-        console.log('sucess');
-
 
     } catch (err) {
         console.error(err);
@@ -112,8 +98,6 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
 
         results.dietimage = data.Location
         count++;
-        console.log('sucess');
-
 
     } catch (err) {
         console.error(err);
@@ -121,7 +105,6 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
         throw new Error('Upload failed');
     }
 
-    console.log(count);
 
     if (count === 3) {
         req.files = results
@@ -136,8 +119,6 @@ export const s3Multiple = asynHandler(async (req, res, next) => {
 
 
 export const s3Banner = asynHandler(async (req, res, next) => {
-    console.log(req.files);
-
 
     const files = req.files;
     const image1 = files.image1[0]
@@ -156,14 +137,11 @@ export const s3Banner = asynHandler(async (req, res, next) => {
     };
     try {
         const data = await s3.upload(image1params).promise();
-        console.log(data);
         results.image1 = data.Location
         count++;
-        console.log('sucess');
 
 
     } catch (err) {
-        console.error(err);
         res.status(400);
         throw new Error('Upload failed');
     }
@@ -180,7 +158,6 @@ export const s3Banner = asynHandler(async (req, res, next) => {
 
         results.image2 = data.Location
         count++;
-        console.log('sucess');
 
 
     } catch (err) {
@@ -201,8 +178,6 @@ export const s3Banner = asynHandler(async (req, res, next) => {
 
         results.image3 = data.Location
         count++;
-        console.log('sucess');
-
 
     } catch (err) {
         console.error(err);
@@ -210,11 +185,9 @@ export const s3Banner = asynHandler(async (req, res, next) => {
         throw new Error('Upload failed');
     }
 
-    console.log(count);
 
     if (count === 3) {
         req.files = results
-        console.log("upload sucess");
         next();
     }
 
@@ -225,8 +198,6 @@ export const s3Banner = asynHandler(async (req, res, next) => {
 
 
 export const getFilestream = (filekey) => {
-    console.log("reached s333333");
-    console.log(filekey);
     const downloadParms = {
         Key: filekey,
         Bucket: AWS_BUCKET_NAME

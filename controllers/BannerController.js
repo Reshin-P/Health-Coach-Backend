@@ -1,13 +1,19 @@
 import asyncHandler from "express-async-handler";
 import Banner from "../model/BannerModel.js";
 
+
+
+
+// @desc Post  Add Banners
+// @route Post /api/banner
+// @access Admin
+
 const addBanner = asyncHandler(async (req, res) => {
 
     const { title, subtitle, titlecolor, subtitlecolor } = req.body
     const { image1, image2, image3 } = req.files
     try {
         const banner = await Banner.findOne()
-        console.log("banner>>", banner);
         if (banner) {
             banner.title = title
             banner.subtitle = subtitle
@@ -19,8 +25,6 @@ const addBanner = asyncHandler(async (req, res) => {
             banner.save()
             res.status(200).json(banner)
         } else {
-            console.log(">>,,<<<<");
-            console.log(title, subtitle, image1, image2, image3);
             const banner = await Banner.create({
                 title,
                 subtitle,
@@ -37,6 +41,11 @@ const addBanner = asyncHandler(async (req, res) => {
     }
 
 })
+
+
+// @desc GET get Banners
+// @route GET /api/banner
+// @access Public
 
 const getBanner = asyncHandler(async (req, res) => {
 

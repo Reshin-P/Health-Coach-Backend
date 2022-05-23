@@ -2,6 +2,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import express from 'express'
 import http from 'http'
+import path from 'path'
 import connectDB from './Config/DB-Config.js'
 import { errorHandler, notFound } from './middleware/errorMiddleware.js'
 import AdminRouter from './routes/AdminRouter.js'
@@ -43,9 +44,20 @@ app.use('/api/subcribe', SubcribeRouter)
 app.use('/api/conversation', ConversationRouter)
 
 
-app.use(notFound)
+const __dirname = path.resolve()
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '../frontend/build')))
+  
+    app.get('*', (req, res) =>
+      res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    )
+  } else {
+    app.get('/', (req, res) => {
+      res.send('API is running....')
+    })
+  }
+  app.use(notFound)
 app.use(errorHandler)
-
 const PORT = process.env.PORT
 
 

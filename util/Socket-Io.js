@@ -3,7 +3,6 @@ import { Server } from 'socket.io'
 
 
 export const createSocket = (server) => {
-    console.log("socket io server creating");
     const io = new Server(server, {
         cors: {
             origin: "*",
@@ -44,7 +43,6 @@ export const createSocket = (server) => {
         // ADD USER
 
         Socket.on("addUser", userId => {
-            console.log("sdkjfadskl")
             addUser(userId, Socket.id)
             io.emit("getUsers", user)
         })
@@ -53,9 +51,7 @@ export const createSocket = (server) => {
 
             const getedUser = getUser(reciverId)
             if (getedUser) {
-                console.log("here/......----......")
                 let Sid = getedUser.SocketID
-                console.log(Sid)
                 io.to(Sid).emit("getMessage", {
                     senderId,
                     text

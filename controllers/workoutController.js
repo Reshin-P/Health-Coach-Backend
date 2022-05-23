@@ -106,10 +106,7 @@ const updateWorkout = asyncHandler(async (req, res) => {
 
 
 const getAllTrainerWorkouts = asyncHandler(async (req, res) => {
-    console.log("reache here traienr");
-    console.log(req.params.id);
     const workout = await Workout.find({ trainerid: req.params.id })
-    console.log(workout);
     if (workout) {
         if (workout.length == 0) {
             throw new Error("No Workout Addded")
@@ -123,20 +120,19 @@ const getAllTrainerWorkouts = asyncHandler(async (req, res) => {
 })
 
 
+//@desc Patch Block Unblock workout
+//@route Patch /api/workout/trainer/:id
+//@access Public
 
 
 const blockUnblock = asyncHandler(async (req, res) => {
-    console.log("eeeeeee");
-    console.log(req.body);
     const { id, value } = req.body
     const workout = await Workout.findById(id)
-    console.log(workout);
     if (value === "block") {
         workout.isBlocked = true
         await workout.save()
         res.status(200).json("Workout Blocked")
     } else if (value === "unblock") {
-        console.log("else if worked");
         workout.isBlocked = false
         await workout.save()
         res.status(200).json("Workout UnBlocked")

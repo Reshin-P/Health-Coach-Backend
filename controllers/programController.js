@@ -55,6 +55,9 @@ const addPrograms = asyncHandler(async (req, res) => {
 
 })
 
+// @desc Delete  Delete Programs
+// @route DELETE /api/programs
+// @access Admin
 const deleteProgram = asyncHandler(async (req, res) => {
     const data = await Program.findById(req.params.id)
     if (data) {

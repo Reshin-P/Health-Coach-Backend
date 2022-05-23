@@ -2,6 +2,12 @@ import asynchandler from 'express-async-handler'
 import Conversation from '../model/ConversationModel.js'
 const makeMembers = ({ sender, receiver }) => [sender, receiver]
 
+
+
+// @desc Post  Add conversation
+// @route Post /api/conversations
+// @access Public
+
 const createConversation = asynchandler(async (req, res) => {
 
     const members = [req.body.user, req.body.trainer]
