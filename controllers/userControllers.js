@@ -202,6 +202,13 @@ const allUsers = asyncHandler(async (req, res) => {
     }
 })
 
+
+
+const test = asyncHandler(async (req, res) => {
+    console.log("test");
+    res.status(200).json({ message: "Api Working" })
+})
+
 export {
     allUsers,
     signUp,
@@ -210,6 +217,7 @@ export {
     updataUser,
     updateWeight,
     getSingleUser,
-    uploadPhoto
+    uploadPhoto,
+    test
 };
 
