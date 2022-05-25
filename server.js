@@ -21,10 +21,7 @@ const app = express()
 const server = http.createServer(app)
 createSocket(server)
 
-app.use(cors({
-  methods: "*",
-  origin: "*"
-}))
+app.use(cors())
 dotenv.config()
 
 
