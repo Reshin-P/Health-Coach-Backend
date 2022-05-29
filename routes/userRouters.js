@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { authUser, signUp, updataUser, updateWeight, getSingleUser, uploadPhoto, allUsers, test } from '../controllers/userControllers.js';
+import { authUser, signUp, updataUser, updateWeight, getSingleUser, uploadPhoto, allUsers } from '../controllers/userControllers.js';
 import { protect, protectAdmin } from '../middleware/authMiddleware.js'
 import { s3UpdataSingle } from '../util/s3Bucket.js'
 const router = express.Router()
@@ -13,7 +13,6 @@ const storage = multer.memoryStorage({
 const upload = multer({ storage })
 
 router.route('/').get(protectAdmin, allUsers)
-router.route('/check').get(test)
 router.route('/').post(signUp)
 router.route('/login').post(authUser)
 router.route('/:id').put(protect, updataUser)

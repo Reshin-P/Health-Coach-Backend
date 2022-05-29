@@ -48,7 +48,6 @@ const addBanner = asyncHandler(async (req, res) => {
 // @access Public
 
 const getBanner = asyncHandler(async (req, res) => {
-    console.log("banner");
 
     const banner = await Banner.findOne()
     if (banner) {
